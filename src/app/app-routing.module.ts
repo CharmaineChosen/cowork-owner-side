@@ -4,7 +4,7 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'signin',
+    redirectTo: 'splash',
     pathMatch: 'full'
   },
   {
@@ -80,7 +80,8 @@ const routes: Routes = [
   {
     path: 'view-walkins/:spaceuid/:category/:profileuid',
     loadChildren: () => import('./pages/view-walkins/view-walkins.module').then( m => m.ViewWalkinsPageModule)
-  },  {
+  },
+  {
     path: 'forget',
     loadChildren: () => import('./pages/forget/forget.module').then( m => m.ForgetPageModule)
   },
