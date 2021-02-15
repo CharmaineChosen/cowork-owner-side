@@ -7,7 +7,7 @@ import 'firebase/auth';
 import { IonInfiniteScroll } from '@ionic/angular';
 import { FormBuilder, FormGroup, FormArray, FormControl } from '@angular/forms';
 import { OwnerServiceService } from 'src/app/services/owner.service';
-
+import { AlertController, NavController, LoadingController } from '@ionic/angular';
 
 @Component({
   selector: 'app-profile',
@@ -19,17 +19,18 @@ export class ProfilePage implements OnInit {
   profileUid: string;
   ret_array:any = [];
   viewSpace = 0; 
-  constructor(public ownerservice:OwnerServiceService,public account:SignInSignUpService) {
+  constructor(public ownerservice:OwnerServiceService,public account:SignInSignUpService,public loadingCtrl: LoadingController) {
     firebase.firestore().collectionGroup("profile")
-    .where("uid", "==", this.account.getUserSession())
-    .get()
-    .then(snap => {
-      snap.forEach(doc => {
-      this.array.push(doc.data() )
-      this.profileUid= doc.id;
-        console.log(this.array)
+      .where("uid", "==", this.account.getUserSession())
+      .get()
+      .then(snap => {
+        snap.forEach(doc => {
+          this.array.push(doc.data())
+          this.profileUid = doc.id;
+          console.log(this.array)
+        });
       });
-    });
+  
    }
 
    workingSpaces(){
@@ -73,6 +74,14 @@ view(){
   this.workingSpaces()
 }
   ngOnInit() {
+    this.reload(); 
   }
+ async reload() {
+      const loading = await this.loadingCtrl.create({
+        message: 'Please wait...',
+        duration: 3000
+      });
 
+      await loading.present();
+    }
 }

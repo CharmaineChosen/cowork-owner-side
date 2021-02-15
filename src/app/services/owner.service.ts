@@ -5,6 +5,7 @@ import 'firebase/database';
 import 'firebase/firestore';
 import { from } from 'rxjs';
 import { Router } from '@angular/router';
+import { AlertController, NavController, LoadingController } from '@ionic/angular';
 @Injectable({
   providedIn: 'root'
 })
@@ -18,7 +19,7 @@ export class OwnerServiceService {
   resProfArray = new Array()
   UID: any;
   workspace_uid: any;
-  constructor(private router: Router) { }
+  constructor(private router: Router,public loadingCtrl: LoadingController) { }
 
   signAuth() {
     return firebase.auth().onAuthStateChanged(user => {
@@ -67,8 +68,20 @@ export class OwnerServiceService {
         }, { merge: true }).then(a => {
           console.log("Changed")
         })
-    ]);
+      
+    ])
+    this.reload();
   }
+  
+   async reload() {
+      const loading = await this.loadingCtrl.create({
+        message: 'Please wait...',
+        duration: 3000
+      });
+
+      await loading.present();
+    }
+  
   editProfile(user_uid, uid, company_tel, company_address,
     company_website, company_emaile,
     company_name, outside_features:any[], aboutus) {

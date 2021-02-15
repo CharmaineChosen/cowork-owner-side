@@ -171,7 +171,8 @@ export class SignInSignUpService {
     
   }  
 
-   async showAlertError() { 
+  async showAlertError() { 
+     
   const alert = await this.alertCtrl.create({ 
     // header: 'Alert!', 
        message: 'Oops! looks like you do not have a business account profile with us, Click Okay to Create one.',
@@ -179,6 +180,7 @@ export class SignInSignUpService {
         {
           text: 'Okay',
           handler: async () => {
+            
             this.router.navigateByUrl('/signup');
       }
         },

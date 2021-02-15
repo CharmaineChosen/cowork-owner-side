@@ -19,7 +19,10 @@ export class SigninPage implements OnInit {
     this.showpassword = !this.showpassword;
   }
   constructor( public accountServices: SignInSignUpService,private formBuilder:FormBuilder, private accountService: SignInSignUpService,private router: Router,public nav: NavController,
-    public loadingCtrl: LoadingController,private alertCtrl: AlertController) { }
+    public loadingCtrl: LoadingController, private alertCtrl: AlertController) {
+    // location.reload();
+  
+  }
 
   ngOnInit() {
     this.LoginForm = this.formBuilder.group({
