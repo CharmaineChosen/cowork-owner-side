@@ -43,7 +43,7 @@
        <ion-row>
 
        
-         <p [routerLink] = "['/previews',x.uid,x.workspace_uid,x.spaceuid]" style="color: #9010F5; font-size: 14px;">Previews</p>
+         <p [routerLink] = "['/previews',x.uid,x.workspace_uid,x.spaceuid]" style="color: #9010F5; font-size: 14px;">Reviews</p>
        </ion-row>
        <ion-row>
          <ion-col>
@@ -73,27 +73,27 @@
 <ion-row>
 
   <div *ngIf="GallaryStatusValue==1">
-
     <ion-item>
-  
-      <ion-input type="file"  required   name="img"  accept="image/*" id="upload" (change)="fileChangeEvent($event)"></ion-input>
-      <button (click)="uploadGallary()" *ngIf="this.gallaryArraySize < 4"> add image</button>
-   
+      <ion-input type="file"  required  *ngIf="this.gallaryArraySize < 4"  name="img"  accept="image/*" id="upload" (change)="onselect($event)"></ion-input>
       <div>
-        <div style="color:red;" *ngIf=" this.imageError!==''">{{this.imageError}}</div>
+        <div  style="color:red;" *ngIf=" this.imageError!==''">{{this.imageError}}</div>
       </div>
     </ion-item>
     <ion-grid>
       <ion-row>
-       <b>Total images upload: {{this.gallaryArraySize+1 }}</b> 
+       <b>Total images upload: {{this.gallaryArraySize}}</b> 
+
       </ion-row>
-      <ion-row *ngIf="this.gallaryArraySize >= 4">
-        <span >Click image to delete</span>
+   
+      <ion-row>
+        <ion-fab  horizontal="end"  >
+          <ion-fab-button    (click)="uploadGallary()"color="warning">
+            <ion-icon name="add"></ion-icon>
+          </ion-fab-button>
+        </ion-fab>
       </ion-row>
-      <ion-row >
-        <ion-col *ngFor="let k of gallaryArray">
-         <img (click)="deleteImage(k.spaceuid,k.gallaryuid)" [src]="k.image">
-        </ion-col>
+      <ion-row (click)="freshers()" >
+        <img *ngFor="let url of urls" [src]="url">
       </ion-row>
     </ion-grid>
 

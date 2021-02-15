@@ -9,7 +9,7 @@ import 'firebase/auth';
 import { FormBuilder, FormGroup, FormArray, FormControl } from '@angular/forms';
 import { OwnerServiceService } from 'src/app/services/owner.service';
 
-import { IonInfiniteScroll, PopoverController } from '@ionic/angular';
+import { IonInfiniteScroll, LoadingController, PopoverController } from '@ionic/angular';
 import { MassegesPage } from 'src/app/feedback/masseges/masseges.page';
 //////////////Geolocation and Geocode//////////
 import { Plugins } from '@capacitor/core';
@@ -37,7 +37,7 @@ export class UpdateSpacePage implements OnInit {
   arrayList:any=[]
   arrayEdit:any=[]
   category = this.route.snapshot.params.category;
-  // cateuid = this.route.snapshot.params.cateuid;
+  // cateuid = this.route.snapshot.params.cateuid; gallaryArray
   showFormvalue: number;
   spaceUid:any
   description_: any;
@@ -86,17 +86,35 @@ export class UpdateSpacePage implements OnInit {
   gallaryArraySize: number=-1;
   spaceid: string;
   extrasCart: number=0;
+  gallaryuid: string;
 
   onChange(name: string, isChecked: boolean) {
     this.amenitiesEdit.push((name));
     console.log(this.amenitiesEdit)
   }
+
+
+
+  /**********************Multiple file upload********************/
+
+
+urls:any=[];
+onselect(e){
+  if(e.target.files){
+    for(let i=0;i<File.length;i++){
+      var reader = new FileReader();
+      reader.readAsDataURL(e.target.files[i]);
+      reader.onload = (events:any)=>{
+        this.urls.push(events.target.result);
+      }
+    }
+  }
+}
+
   fileChangeEvent(fileInput: any) {
-
-
-
     this. imageError = null;
     if(fileInput.target.files && fileInput.target.files[0]){
+     //////////////////////////////////////////////////////////    
         const max_size = 20971520;
         const allowed_types = ['image/png', 'image/jpeg'];
         const max_height = 15200;
@@ -129,11 +147,18 @@ export class UpdateSpacePage implements OnInit {
                 const imgBase64Path = e.target.result;
                 this.cardImageBase64 = imgBase64Path;
                 this.isImageSaved = true;
-               return this.cardImageBase64;
+              
+                return this.cardImageBase64;
+              
               }
             }
           }
         reader.readAsDataURL(fileInput.target.files[0])
+   /////////////////////////////
+
+
+
+
     }
   
   }
@@ -144,7 +169,7 @@ public lng: any;
 showingCurrent: boolean = true;
 addressLocation: string; 
 
-  constructor(private nativeGeocoder: NativeGeocoder, private ngZone: NgZone,private popover:PopoverController,private route:ActivatedRoute,public ownerservice:OwnerServiceService,public account:SignInSignUpService) { 
+  constructor(public loader:LoadingController,private nativeGeocoder: NativeGeocoder, private ngZone: NgZone,private popover:PopoverController,private route:ActivatedRoute,public ownerservice:OwnerServiceService,public account:SignInSignUpService) { 
    
    
    
@@ -248,9 +273,27 @@ getSpaceUid(){
 }
 uploadGallary(){
 console.log(this.workspaceuid)
-  this.ownerservice.addGallary(this.account.getUserSession(),this.ownerservice.getWorkSpaceUID(),this.workspaceuid, this.cardImageBase64)
+  this.ownerservice.addGallary(this.account.getUserSession(),this.ownerservice.getWorkSpaceUID(),this.workspaceuid,   this.urls,this.gallaryuid)
+ // this.imageArrayList(this.cardImageBase64)
+  //  this.freshers(); gallaryArray
+}
+
+
+
+
+imageList:any=[];
+imageInArray(){
+
+  var gallary = {
+    img:this.cardImageBase64
+};
+
+this.imageList.push(gallary)
+//this.extrasCart=this.extrasArray.length
+console.log(this.imageList)
 
 }
+
 
 checkGallary(valueuid){
   console.log(this.ownerservice.getWorkSpaceUID())
@@ -265,6 +308,7 @@ checkGallary(valueuid){
    .get().then(doc=>{
        doc.forEach(dat=>{
         this.gallaryArray.push(Object.assign(dat.data(),{'gallaryuid':dat.id}) )
+        this.gallaryuid = dat.id
         this.gallaryArraySize=this.gallaryArray.length-1
        })
    })
@@ -294,7 +338,7 @@ CreatePopover()
 
 //////////////Geolocation and Geocode//////////
 async geocode() {
-//  this.ownerservice.geoCodeLocation(this.account.getUserSession(), this.ownerservice.getWorkSpaceUID(),this.spaceUid,-26.2585,27.9014)
+  this.ownerservice.geoCodeLocation(this.account.getUserSession(), this.ownerservice.getWorkSpaceUID(),this.spaceUid,-26.269212999999997,27.790485)
   if (this.addressLocation != "") {
 
     let options: NativeGeocoderOptions = {
@@ -322,6 +366,40 @@ async geocode() {
     });
   }
 }
+
+
+////Refreshers
+dummyList:any=[] 
+doRefresh(event) {  
+  console.log('Pull Event Triggered!');  
+  setTimeout(() => {
+    this.dummyList = Array(5);
+    event.target.complete();
+  }, 1500); 
+}  
+
+
+doRefreshT(event) {  
+      console.log('Pull Event Triggered!');  
+    }  
+
+
+freshers(){
+  this.loader.create({
+    message: 'This Loader Will Auto Hide in 2 Seconds',
+    duration: 2000
+  }).then((res) => {
+    res.present();
+
+    res.onDidDismiss().then((dis) => {
+      console.log('Loading dismissed! after 2 Seconds', dis);
+    });
+  }); 
+}
+
+
+
+
 }
 
 

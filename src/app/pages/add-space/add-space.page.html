@@ -1,17 +1,24 @@
 
 <ion-content>
-<!-- <div>
+<!-- <div >
   <ion-buttons slot="start">
     <ion-back-button defaultHref="/"></ion-back-button>
   </ion-buttons>
 </div> -->
   <div class="holder">
-    <ion-icon style="position: absolute;left:3%;font-size: 30px;top: 15%;color: #9010F5;" name="images-outline">
+    <ion-icon style="position: absolute;left:3%;font-size: 30px;margin-top: 5px; top: 15%;color: #9010F5;" name="images-outline">
       <ion-input type="file"  required   name="img"  accept="image/*" id="upload" (change)="fileChangeEvent($event)"></ion-input>
     </ion-icon>
+
     <div class="top">
-      <p style="font-size: 24px; font-weight: bold; color:whitesmoke;">Add your space</p>
+      <ion-buttons slot="start">
+        <ion-back-button defaultHref="/"></ion-back-button>
+      </ion-buttons>
+
+      <p style="font-size: 24px; font-weight: bold; color:white; margin-top: -20px;">Add your space</p>
+
     </div>
+
     <div *ngIf="viewSpace==1">
       <ion-grid style="margin: 0%;"> 
         <ion-row  *ngFor="let x of ret_array">
@@ -146,7 +153,7 @@
        </div>
      </div>
     </ion-item>
-    <div style="height: 40%; width: 100%; overflow: visible;">
+    <!-- <div style="height: 40%; width: 100%; overflow: visible;"> -->
     <!-- ............................................................................................. -->
     <ion-grid>
       <ion-row style="color: black;margin: 5px; position: relative;">
@@ -164,13 +171,14 @@
     </div>
       </ion-row>
     </ion-grid>
-     
-          <ion-button (click)="submit()"  [disabled]="!addCoSpaceForm.valid"  style="--background:#9010F5; width: 150px; height: 55px;" shape="round">Submit</ion-button>
-        
-       
-          <ion-button (click)="view()" style="--background: #16D6E3; width: 170px; margin-left: -30px; height: 55px;" shape="round">View Spaces</ion-button>
-       
+    <div class="buttons2">
+          <ion-button (click)="submit()"  [disabled]="!addCoSpaceForm.valid"  style="--background:#9010F5; width: 55%; margin-left: 0px; height: 55px;" shape="round">Submit</ion-button>     
+    </div>  
+
+    <div class="shape2">
+      <ion-button (click)="view()" style="--background: #16D6E3; width: 60%; height: 55px;" shape="round">View Spaces</ion-button> 
     </div>
+    <!-- </div> -->
    
       </form>
 
