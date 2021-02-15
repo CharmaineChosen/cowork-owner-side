@@ -24,7 +24,7 @@ export class OwnerServiceService {
     return firebase.auth().onAuthStateChanged(user => {
       if (user) {
         const uid = user.uid;
-        //  this.setSession(email);
+        //  this.setSession(users);
         this.setuid(uid)
         console.log('user logged in: ', user);
       } else {
@@ -155,14 +155,14 @@ export class OwnerServiceService {
     ]);
   }
 
-  addGallary(profiles_uid,profile_uid,spaceuid,image) {
+  addGallary(profiles_uid,profile_uid,spaceuid,image:[],gallaryid) {
     var db = firebase.firestore();
     var hotelsRef = db.collection("profiles").doc(profiles_uid);
     var hotel = Promise.all([
       hotelsRef.collection("profile").doc(profile_uid)
                .collection("space").doc(spaceuid)
-               .collection("gallary")
-        .add({
+               .collection("gallary").doc(gallaryid)
+        .set({
           uid: profiles_uid,
           workspace_uid:profile_uid,
           spaceuid:spaceuid,

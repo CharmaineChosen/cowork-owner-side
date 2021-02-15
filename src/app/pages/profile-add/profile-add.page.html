@@ -6,6 +6,9 @@
 <ion-content>
   <div class="holder">
     <div class="image">
+      <ion-buttons style="background-color: #D8CDC7;" slot="start">
+        <ion-back-button defaultHref="/"></ion-back-button>
+      </ion-buttons>
     <img src="assets/back.jpg">
     </div>
     <!-- <ion-icon style="position: absolute;left:3%;font-size: 30px;top: 15%;color: #303d3d;" name="images-outline"></ion-icon> -->
@@ -18,7 +21,7 @@
   </div> -->
   <!-- <ion-icon style="font-size: 50px; position: absolute;top: 20%;right: 5%;color:red;" name="add-circle-outline"></ion-icon> -->
     <div class="bottom">
-      <p style="font-size:22px;font-weight: bolder;position: absolute;top: 0%;left: 5%;color: black;">Profile</p>
+      <p style="font-size:22px;font-weight: bolder;position: absolute;top: 0%;left: 5%;color: #2D98E6;">Profile</p>
      
       <form *ngIf="editForm==false;else loggedOut" [formGroup]="updateForm" type="text" style="width: 100%;position: absolute;top: 15%;height: 80%;">
     
