@@ -8,6 +8,7 @@ import { IonInfiniteScroll } from '@ionic/angular';
 import { FormBuilder, FormGroup, FormArray, FormControl } from '@angular/forms';
 import { OwnerServiceService } from 'src/app/services/owner.service';
 import { AlertController, NavController, LoadingController } from '@ionic/angular';
+import { data } from 'jquery';
 
 @Component({
   selector: 'app-profile',
@@ -23,15 +24,29 @@ export class ProfilePage implements OnInit {
     firebase.firestore().collectionGroup("profile")
       .where("uid", "==", this.account.getUserSession())
       .get()
-      .then(snap => {
-        snap.forEach(doc => {
+      .then(onSnapshot => {
+        onSnapshot.forEach(doc => {
           this.array.push(doc.data())
           this.profileUid = doc.id;
           console.log(this.array)
         });
       });
-  
+    
+    // location.reload();
+    // console.log('refreshed page');
+    // window.stop();
+  firebase.firestore().collectionGroup("profile").where("uid", "==", this.account.getUserSession())
+    .onSnapshot((querySnapshot) => {
+        var cities = [];
+        querySnapshot.forEach((doc) => {
+            cities.push(doc.data());
+        });
+        console.log("Current profile: ", cities.join(", "));
+    });
    }
+
+
+  
 
    workingSpaces(){
     firebase.firestore().collection("profiles")
@@ -74,7 +89,9 @@ view(){
   this.workingSpaces()
 }
   ngOnInit() {
-    this.reload(); 
+    location.reload();
+    console.log('refreshed page');
+    window.stop();
   }
  async reload() {
       const loading = await this.loadingCtrl.create({

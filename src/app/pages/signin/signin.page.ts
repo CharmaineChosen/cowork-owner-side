@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder,Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AlertController, NavController, LoadingController } from '@ionic/angular';
+import { sign } from 'crypto';
 import { from } from 'rxjs';
 import { SignInSignUpService } from 'src/app/sign-in-sign-up.service';
 
@@ -30,6 +31,11 @@ export class SigninPage implements OnInit {
       password: ['', Validators.required],
     })
   }
+  // ngOnDestroy(): void {
+  //   //Called once, before the instance is destroyed.
+  //   //Add 'implements OnDestroy' to the class.
+    
+  // }
   get email() {
     return this.LoginForm.get("email");
   }
