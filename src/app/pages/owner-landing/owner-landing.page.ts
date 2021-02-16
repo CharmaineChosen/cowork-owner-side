@@ -25,7 +25,30 @@ db =firebase.firestore();
   newBookNum:any=0;
   spacesNum:any=0;
   constructor(private router: Router,private route:ActivatedRoute,public ownerservice:OwnerServiceService,public account:SignInSignUpService) { 
-  console.log(this.account.getUserSession())
+  // console.log(this.account.getUserSession())
+  //   this.db.collectionGroup('reservation').where('profiles_uid','==',this.account.getUserSession()).where("read","==",false).orderBy("date").
+  //   get()
+  //   .then(snap => {
+  //     snap.forEach(dat=>{
+  //       this.bookings.push( Object.assign(dat.data(),{'reservationuid':dat.id}) )
+  //     })
+  //   })
+  //   this.space();
+  //   this. newReservations();
+  //   this.oldBookings();
+  }
+   
+  ionViewWillEnter(){
+    // console.log("ionViewWillEnter")
+    // for(let i = 0; i < 100000; i++){
+    //   console.log(i);
+    // }
+    // window.location.reload();
+    //       window.stop();
+   console.log("we are entering the profile page");
+}
+  ionViewDidEnter() {
+   console.log(this.account.getUserSession())
     this.db.collectionGroup('reservation').where('profiles_uid','==',this.account.getUserSession()).where("read","==",false).orderBy("date").
     get()
     .then(snap => {
@@ -36,8 +59,10 @@ db =firebase.firestore();
     this.space();
     this. newReservations();
     this.oldBookings();
-  }
-   
+        
+    console.log("ionViewDidEnter");
+    
+}
 
   space(){
     this.db.collectionGroup('space').where('uid','==',this.account.getUserSession()).

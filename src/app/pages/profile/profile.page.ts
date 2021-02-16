@@ -17,7 +17,8 @@ import { AlertController, NavController, LoadingController } from '@ionic/angula
   styleUrls: ['./profile.page.scss'],
 })
 export class ProfilePage implements OnInit {
-  array: any=[];
+  array: any;
+  profile: any;
   profileUid: string;
   ret_array:any = [];
   viewSpace = 0; 
@@ -33,27 +34,41 @@ export class ProfilePage implements OnInit {
     //   });
     // });
     
-    // firebase.firestore().collectionGroup("profile")
-    //  .where("uid", "==", this.account.getUserSession())
-    //   .get()
-    //   .then({})
-    // location.reload();
-    // console.log('refreshed page');
-    // window.stop();
-  firebase.firestore().collectionGroup("profile").where("uid", "==", this.account.getUserSession())
-    .onSnapshot((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          this.array.push(doc.data());
-          this.profileUid= doc.id;
-          console.log("data: ", this.array);
-          location.reload();
-          window.stop();
-        });
-      // cities.push(doc.data());
-        console.log("Current profile: ", this.array);
-    });
    }
 
+
+ ionViewWillEnter(){
+    // console.log("ionViewWillEnter")
+    // for(let i = 0; i < 100000; i++){
+    //   console.log(i);
+    // }
+    // window.location.reload();
+    //       window.stop();
+   console.log("we are entering the profile page");
+}
+  ionViewDidEnter() {
+    firebase.firestore().collectionGroup("profile").where("uid", "==", this.account.getUserSession())
+    .onSnapshot((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        this.profile = doc.data();
+       
+          // this.array.push(doc.data());
+          this.profileUid= doc.id;
+          console.log("data: ", this.profile);
+          // this.ionViewDidEnter();
+      // window.location.reload();
+          // window.stop();
+
+        });
+          
+      // cities.push(doc.data());
+        console.log("Current profile: ", this.profile);
+    });
+        
+    console.log("ionViewDidEnter");
+    
+} 
+  
    workingSpaces(){
     firebase.firestore().collection("profiles")
     .doc(this.account.getUserSession())

@@ -13,7 +13,7 @@ import { OwnerServiceService } from 'src/app/services/owner.service';
 
 import {  PopoverController } from '@ionic/angular';
 import { MassegesPage } from 'src/app/feedback/masseges/masseges.page';
-
+import {  LoadingController,AlertController } from '@ionic/angular';
 
 
 
@@ -69,7 +69,7 @@ export class AddSpacePage implements OnInit {
 
 
   spacesTT:any=[]
-  constructor(private popover:PopoverController,private formBuilder:FormBuilder,public ownerservice:OwnerServiceService,public account:SignInSignUpService) { 
+  constructor(private popover:PopoverController,private formBuilder:FormBuilder,public ownerservice:OwnerServiceService,public account:SignInSignUpService,public loadingCtrl: LoadingController, private router: Router,private alertCtrl: AlertController) { 
     
     firebase.firestore().collection("profiles")
                         .doc(this.account.getUserSession())
@@ -219,10 +219,19 @@ fileChangeEvent(fileInput: any) {
                                        this.addCoSpaceForm.value.name,
                                        this.cardImageBase64,
                                        this.addCoSpaceForm.value.price,
-                                       this.addCoSpaceForm.value.description) 
-                                       this.  CreatePopover()
+                                      this.addCoSpaceForm.value.description) 
+    // this.reload();
+                                      //  this.  CreatePopover()
   }
 
+    // async reload() {
+    //   const loading = await this.loadingCtrl.create({
+    //     message: 'Please wait...',
+    //     // duration: 3000
+    //   });
+    //   this.router.navigateByUrl('/owner-landing');
+    //   await loading.present();
+    // }
  
   workingSpaces(){
     firebase.firestore().collection("profiles")

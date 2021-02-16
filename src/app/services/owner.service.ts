@@ -46,9 +46,10 @@ export class OwnerServiceService {
   //   return firebase.firestore().doc('space');
   // }
 
-  updateProfile(user_uid, uid, company_tel, company_address,
+ async updateProfile(user_uid, uid, company_tel, company_address,
     company_website, social_media, company_emaile,
     company_name, img_profile, outside_features, aboutus) {
+    const loading = await this.loadingCtrl.create();
     var db = firebase.firestore();
     var hotelsRef = db.collection("profiles").doc(uid);
     var hotel = Promise.all([
@@ -66,25 +67,30 @@ export class OwnerServiceService {
           outside_features: outside_features,
           aboutus: aboutus
         }, { merge: true }).then(a => {
+            loading.dismiss().then(() => {
+          console.log("Changed");
+        this.router.navigateByUrl('/profile');
+         });
           console.log("Changed")
         })
       
     ])
-    this.reload();
+return await loading.present();
   }
   
    async reload() {
       const loading = await this.loadingCtrl.create({
         message: 'Please wait...',
-        duration: 3000
+        // duration: 3000
       });
 
       await loading.present();
     }
   
-  editProfile(user_uid, uid, company_tel, company_address,
+ async editProfile(user_uid, uid, company_tel, company_address,
     company_website, company_emaile,
-    company_name, outside_features:any[], aboutus) {
+    company_name, outside_features: any[], aboutus) {
+    const loading = await this.loadingCtrl.create();
     var db = firebase.firestore();
     var hotelsRef = db.collection("profiles");
     hotelsRef.doc(uid).collection("profile").doc(user_uid)
@@ -99,7 +105,14 @@ export class OwnerServiceService {
       user_uid: user_uid,
       outside_features: outside_features,
       aboutus: aboutus
-     }, { merge: true })
+     }, { merge: true }).then(a => {
+            loading.dismiss().then(() => {
+          console.log("Changed");
+        this.router.navigateByUrl('/profile');
+         });
+          console.log("Changed")
+     })
+   return await loading.present();
   }
   changeImg(user_uid, uid, img_profile) {
     var db = firebase.firestore();
@@ -145,7 +158,8 @@ export class OwnerServiceService {
 
 
 
-  addcoworkingSpace(profiles_uid,profile_uid,categories,category_number,address,city,province,amenities,image,price,description) {
+  async addcoworkingSpace(profiles_uid,profile_uid,categories,category_number,address,city,province,amenities,image,price,description) {
+      const loading = await this.loadingCtrl.create();
     var db = firebase.firestore();
     var hotelsRef = db.collection("profiles").doc(profiles_uid);
     var hotel = Promise.all([
@@ -161,12 +175,39 @@ export class OwnerServiceService {
           amenities:amenities,
           image:image,
           price:price,
-          description:description
+          description: description,
+          
         }).then(a => {
-          console.log("Changed")
+          loading.dismiss().then(() => {
+          console.log("Changed");
+        this.router.navigateByUrl('/owner-landing');
+         });
+          
+          
         })
     ]);
+    return await loading.present();
   }
+  //  async addcoworkingSpace(profiles_uid,profile_uid,categories,category_number,address,city,province,amenities,image,price,description) {
+    
+  //   const loading = await this.loadingCtrl.create();
+  //   this.accountService.SignIn(this.LoginForm.value.email, this.LoginForm.value.password).then((res) => {
+  //     // this.accountService.checkVerification();
+  //   }).then(() => {
+  //     loading.dismiss().then(() => {
+  //       // this.router.navigateByUrl('/update-space');
+  //     });
+  //   },
+  //     error => {
+  //       loading.dismiss().then(() => {
+  //         // this.router.navigateByUrl('/signin')
+  //         console.log(error);
+  //       });
+  //     }
+  //   );
+  //   return await loading.present();
+  // }
+
 
   addGallary(profiles_uid,profile_uid,spaceuid,image:[],gallaryid) {
     var db = firebase.firestore();

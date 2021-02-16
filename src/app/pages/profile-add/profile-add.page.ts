@@ -236,9 +236,9 @@ fileChangeEvent(fileInput: any) {
                     this.updateForm.value.company_website,this.updateForm.value.social_media,
                     this.updateForm.value.company_emaile,this.updateForm.value.company_name,
                     this.cardImageBase64,this.updateForm.value.name,this.updateForm.value.aboutus)
-    this.CreatePopover();
+    // this.CreatePopover();
     // this.reload();
-    this.router.navigateByUrl('/profile');
+    // this.router.navigateByUrl('/profile');
     
      }
      editForms(){
@@ -249,13 +249,13 @@ fileChangeEvent(fileInput: any) {
        this.company_tel_,this.company_address_,this.company_website_,
        this.company_emaile_,this.company_name_,this.amenitiesEdit,this.aboutus_
        )
-        this.CreatePopover()
+        // this.CreatePopover()
         
       }else{
         this.ownerservice.editProfile(this.useruid, this.account.getUserSession(),
         this.company_tel_,this.company_address_,this.company_website_,
         this.company_emaile_,this.company_name_,this.outside_features,this.aboutus_)
-        this. CreatePopover()
+        // this. CreatePopover()
        }
      }
    
@@ -283,40 +283,5 @@ fileChangeEvent(fileInput: any) {
       this.router.navigateByUrl('/profile');
     })
   }
-  
-  async reload() {
-      const loading = await this.loadingCtrl.create({
-        message: 'Please wait...',
-        duration: 3000
-      });
-
-      await loading.present();
-    }
-  // async showAlertEmailSent() { 
-  //     const loading = await this.loadingCtrl.create();
-  // const alert = await this.alertCtrl.create({ 
-  //      message: 'Successfully Updated!!',
-  //     buttons: [
-  //       {
-  //         text: 'Okay',
-  //         handler: async () => {
-  //     }
-  //       },
-  //     ]
-  //   }).then(() => {
-  //     loading.dismiss().then(() => {
-  //       this.router.navigateByUrl('/profile');
-  //     });
-  //   },
-  //     error => {
-  //       loading.dismiss().then(() => {
-  //         this.router.navigateByUrl('/profile-add')
-  //         console.log(error);
-  //       });
-  //     }
-  //   );
-  //  await loading.present();
- 
-  // }
   
 }
