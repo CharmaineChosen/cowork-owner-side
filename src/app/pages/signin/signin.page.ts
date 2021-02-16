@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder,Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AlertController, NavController, LoadingController } from '@ionic/angular';
-import { sign } from 'crypto';
+// import { sign } from 'crypto';
 import { from } from 'rxjs';
 import { SignInSignUpService } from 'src/app/sign-in-sign-up.service';
 

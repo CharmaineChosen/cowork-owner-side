@@ -8,7 +8,8 @@ import { IonInfiniteScroll } from '@ionic/angular';
 import { FormBuilder, FormGroup, FormArray, FormControl } from '@angular/forms';
 import { OwnerServiceService } from 'src/app/services/owner.service';
 import { AlertController, NavController, LoadingController } from '@ionic/angular';
-import { data } from 'jquery';
+// import { join } from 'path';
+// import { data } from 'jquery';
 
 @Component({
   selector: 'app-profile',
@@ -21,32 +22,37 @@ export class ProfilePage implements OnInit {
   ret_array:any = [];
   viewSpace = 0; 
   constructor(public ownerservice:OwnerServiceService,public account:SignInSignUpService,public loadingCtrl: LoadingController) {
-    firebase.firestore().collectionGroup("profile")
-      .where("uid", "==", this.account.getUserSession())
-      .get()
-      .then(onSnapshot => {
-        onSnapshot.forEach(doc => {
-          this.array.push(doc.data())
-          this.profileUid = doc.id;
-          console.log(this.array)
-        });
-      });
+    //  firebase.firestore().collectionGroup("profile")
+    // .where("uid", "==", this.account.getUserSession())
+    // .get()
+    // .then(snap => {
+    //   snap.forEach(doc => {
+    //   this.array.push(doc.data() )
+    //   this.profileUid= doc.id;
+    //     console.log(this.array)
+    //   });
+    // });
     
+    // firebase.firestore().collectionGroup("profile")
+    //  .where("uid", "==", this.account.getUserSession())
+    //   .get()
+    //   .then({})
     // location.reload();
     // console.log('refreshed page');
     // window.stop();
   firebase.firestore().collectionGroup("profile").where("uid", "==", this.account.getUserSession())
     .onSnapshot((querySnapshot) => {
-        var cities = [];
         querySnapshot.forEach((doc) => {
-            cities.push(doc.data());
+          this.array.push(doc.data());
+          this.profileUid= doc.id;
+          console.log("data: ", this.array);
+          location.reload();
+          window.stop();
         });
-        console.log("Current profile: ", cities.join(", "));
+      // cities.push(doc.data());
+        console.log("Current profile: ", this.array);
     });
    }
-
-
-  
 
    workingSpaces(){
     firebase.firestore().collection("profiles")

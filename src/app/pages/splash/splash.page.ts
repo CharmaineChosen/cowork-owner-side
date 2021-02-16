@@ -8,7 +8,10 @@ import { Router } from '@angular/router';
 })
 export class SplashPage implements OnInit {
 
-  constructor(private router: Router) { }
+  constructor(private router: Router) {
+    // location.reload();
+    // window.stop();
+  }
   ngAfterViewInit(){
     setTimeout(() => {
       this.router.navigate(["onboarding"]);
@@ -16,6 +19,8 @@ export class SplashPage implements OnInit {
   }
 
   ngOnInit() {
+    // location.reload();
+    // window.stop();
   }
 
 }

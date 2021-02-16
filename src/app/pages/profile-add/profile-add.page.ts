@@ -237,7 +237,7 @@ fileChangeEvent(fileInput: any) {
                     this.updateForm.value.company_emaile,this.updateForm.value.company_name,
                     this.cardImageBase64,this.updateForm.value.name,this.updateForm.value.aboutus)
     this.CreatePopover();
-    this.reload();
+    // this.reload();
     this.router.navigateByUrl('/profile');
     
      }
