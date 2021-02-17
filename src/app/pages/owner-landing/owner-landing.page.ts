@@ -33,9 +33,9 @@ db =firebase.firestore();
   //       this.bookings.push( Object.assign(dat.data(),{'reservationuid':dat.id}) )
   //     })
   //   })
-  //   this.space();
-  //   this. newReservations();
-  //   this.oldBookings();
+    this.space();
+    // this.newReservations();
+    this.oldBookings();
   }
    
   ionViewWillEnter(){
@@ -45,6 +45,7 @@ db =firebase.firestore();
     // }
     // window.location.reload();
     //       window.stop();
+ this.newReservations();
    console.log("we are entering the profile page");
 }
   ionViewDidEnter() {
@@ -53,12 +54,11 @@ db =firebase.firestore();
     get()
     .then(snap => {
       snap.forEach(dat=>{
-        this.bookings.push( Object.assign(dat.data(),{'reservationuid':dat.id}) )
+        this.bookings.push(Object.assign(dat.data(), { 'reservationuid': dat.id }))
+       
       })
     })
-    this.space();
-    this. newReservations();
-    this.oldBookings();
+    
         
     console.log("ionViewDidEnter");
     
