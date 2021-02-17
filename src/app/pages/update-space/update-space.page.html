@@ -1,20 +1,9 @@
-<!-- <ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="/"></ion-back-button>
-    </ion-buttons>
-    <ion-title>update-space</ion-title>
-  </ion-toolbar>
-</ion-header> -->
 
 <ion-buttons slot="start">
   <ion-back-button defaultHref="/"></ion-back-button>
 </ion-buttons>
 
 <ion-content>
-
-
-
   <ion-grid>
     <ion-row>
   <ion-card  *ngFor="let x of arrayList">
@@ -63,7 +52,7 @@
        <!-- </ion-row> -->
        <!-- <ion-row> -->
          <ion-col>
-        <ion-button  [routerLink] = "['/view-walkins',x.spaceuid,x.categories,x.workspace_uid]" class="view" shape="round">view Walkins</ion-button>
+        <ion-button  [routerLink] = "['/view-walkins',x.spaceuid,x.categories,x.workspace_uid]" class="view" shape="round">View Walkins</ion-button>
         </ion-col>
        </ion-row>
      </ion-grid>
@@ -107,15 +96,17 @@
         <form #editSpaceForm="ngForm" type="text" style="width: 100%;top: 15%;height: 80%;">
        
               <ion-label>Description</ion-label>
-             <ion-input
+             <ion-textarea
                 type="text"    
                 [(ngModel)]="description_" 
                 name="description" 
                 required
                 maxlength="100"
                 #description="ngModel" 
-                placeholder="Company name..">
-              </ion-input>
+                placeholder="Company name"
+                style="border-style: solid;height: 15%;border-width: 1px;border-color: #16D6E3;border-top: 0px;margin: 0px;"></ion-textarea>
+                
+
               <div style="color:red;" *ngIf="!description?.valid && (description?.dirty || description?.touched)">
                 Invalid description
                 <div *ngIf="description.errors.required">
@@ -128,7 +119,7 @@
              <ion-label>Price</ion-label>
             <ion-input  
                 type="number"  
-                placeholder="price..."
+                placeholder="price"
                 [(ngModel)]="price_" 
               
                 name="price_">
@@ -137,7 +128,7 @@
             <ion-label>Province</ion-label>
            <ion-input  
             type="text"  
-            placeholder="province ..."
+            placeholder="province"
             [(ngModel)]="province_" 
             required
             maxlength="100"
@@ -195,14 +186,6 @@
 
         
   
-         
-           
-             <!-- <button (click)="addExtrasToarray()">(+)</button> -->
-
-             
-
-             
-              <!-- </ion-item> -->
 
 
   <ion-item>
@@ -270,13 +253,13 @@
   <!-- <ion-item> -->
     <div> 
       <form #extrasForm="ngForm">    
-      <h3 style="font-size: 18px;">Add extras</h3>
+      <h3 style="font-size: 18px; margin-top: 15px;">Add extras</h3>
       <ion-grid>
         <ion-row>
           <ion-col>
-            <ion-input  
+            <ion-input  class="amenity"
             type="text"  
-            placeholder="Amenity..."
+            placeholder="Amenity"
             [(ngModel)]="enemity" 
             name="enemity"
             maxlength="8"
@@ -300,9 +283,9 @@
        </div>
           </ion-col>
           <ion-col>
-            <ion-input  
+            <ion-input  class="price"
             type="number"  
-            placeholder="Price..."
+            placeholder="Price"
             [(ngModel)]="price" 
             name="price"
             required
