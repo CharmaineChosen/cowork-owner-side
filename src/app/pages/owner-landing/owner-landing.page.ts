@@ -8,6 +8,7 @@ import { IonInfiniteScroll } from '@ionic/angular';
 import { FormBuilder, FormGroup, FormArray, FormControl } from '@angular/forms';
 import { OwnerServiceService } from 'src/app/services/owner.service';
 import { SignInSignUpService } from 'src/app/sign-in-sign-up.service';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-owner-landing',
@@ -18,12 +19,19 @@ export class OwnerLandingPage implements OnInit {
 db =firebase.firestore();
   bookings:any[]=[];
   bookingsHistory:any[]=[]
-  spacesArray:any[]=[];
+  // spacesArray: any[] = [];
+  spacesArray = new Array();
+
+  // let spaces = []
+  spaces = new Array();
+  spacesArray1: any;
+  spacesArrayfinal = new Array();
   newBookArray:any[]=[];
   oldBookArray:any[]=[];
-  oldBookNum:any=0;
-  newBookNum:any=0;
-  spacesNum:any=0;
+  oldBookNum: number=0;
+  newBookNum:number=0;
+  spacesNum:any;
+ public cartItemCount = new BehaviorSubject(0);
   constructor(private router: Router,private route:ActivatedRoute,public ownerservice:OwnerServiceService,public account:SignInSignUpService) { 
   // console.log(this.account.getUserSession())
   //   this.db.collectionGroup('reservation').where('profiles_uid','==',this.account.getUserSession()).where("read","==",false).orderBy("date").
@@ -33,55 +41,61 @@ db =firebase.firestore();
   //       this.bookings.push( Object.assign(dat.data(),{'reservationuid':dat.id}) )
   //     })
   //   })
-    this.space();
-    // this.newReservations();
-    this.oldBookings();
+  
   }
    
   ionViewWillEnter(){
-    // console.log("ionViewWillEnter")
-    // for(let i = 0; i < 100000; i++){
-    //   console.log(i);
-    // }
-    // window.location.reload();
-    //       window.stop();
- this.newReservations();
-   console.log("we are entering the profile page");
+    location.reload();
+    console.log("we are entering the owner page");
+    window.stop();
 }
   ionViewDidEnter() {
-   console.log(this.account.getUserSession())
+    location.reload();
+    console.log("owner page reloaded!");
+   window.stop();
+    console.log(this.account.getUserSession());
     this.db.collectionGroup('reservation').where('profiles_uid','==',this.account.getUserSession()).where("read","==",false).orderBy("date").
     get()
     .then(snap => {
-      snap.forEach(dat=>{
+      snap.forEach(dat => {
+        this.bookings = [];
         this.bookings.push(Object.assign(dat.data(), { 'reservationuid': dat.id }))
-       
+        this.bookings.sort();
       })
     })
-    
-        
+    this.spacesArray = []
+    this.space();
+    this.newReservations();
+    this.oldBookings();
+    // location.reload();
     console.log("ionViewDidEnter");
+    // window.stop();
+
     
 }
 
   space(){
     this.db.collectionGroup('space').where('uid','==',this.account.getUserSession()).
     get()
-    .then(snap => {
-      snap.forEach(dat=>{
-        this.spacesArray.push( Object.assign(dat.data(),{'reservationuid':dat.id}) )
-        this.spacesNum=this.spacesArray.length;
-        console.log(this.spacesArray.length)
+    .then(snapshot => {
+      snapshot.forEach(dat => {
+        this.spacesArray.push(Object.assign(dat.data(), { 'reservationuid': dat.id }))
+        this.spacesArray.sort();
+        this.spacesNum = this.spacesArray.length;
+          console.log(this.spacesArray.length); 
       })
     })
   }
+
   newReservations(){
     this.db.collectionGroup('reservation').where('profiles_uid','==',this.account.getUserSession()).where("read","==",false).orderBy("date").
     get()
     .then(snap => {
-      snap.forEach(dat=>{
-        this.newBookArray.push( Object.assign(dat.data(),{'reservationuid':dat.id}) );
-        this.newBookNum=this.newBookArray.length
+      snap.forEach(dat => {
+        this.newBookArray = [];
+        this.newBookArray.push(Object.assign(dat.data(), { 'reservationuid': dat.id }));
+        this.newBookArray.sort();
+        this.newBookNum = this.newBookArray.length;
       })
     })
 
@@ -92,8 +106,10 @@ db =firebase.firestore();
     this.db.collectionGroup('reservation').where('profiles_uid','==',this.account.getUserSession()).where("read","==",true).orderBy("date").
     get()
     .then(snap => {
-      snap.forEach(dat=>{
-        this.bookingsHistory.push( Object.assign(dat.data(),{'reservationuid':dat.id}) )
+      snap.forEach(dat => {
+        this.bookingsHistory = [];
+        this.bookingsHistory.push(Object.assign(dat.data(), { 'reservationuid': dat.id }))
+        this.bookingsHistory.sort();
       })
     })
   }
@@ -101,14 +117,18 @@ db =firebase.firestore();
     this.db.collectionGroup('reservation').where('profiles_uid','==',this.account.getUserSession()).where("read","==",true).orderBy("date").
     get()
     .then(snap => {
-      snap.forEach(dat=>{
-        this.oldBookArray.push( Object.assign(dat.data(),{'reservationuid':dat.id}) )
+      snap.forEach(dat => {
+        this.oldBookArray = [];
+        this.oldBookArray.push(Object.assign(dat.data(), { 'reservationuid': dat.id }))
+        this.oldBookArray.sort();
         this.oldBookNum = this.oldBookArray.length;
+        
       })
     })
   }
 
   ngOnInit() {
+    
   } 
 
   logout(){

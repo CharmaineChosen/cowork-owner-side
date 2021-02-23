@@ -250,7 +250,8 @@ return await loading.present();
           category:category,
           date: new Date() 
         }).then(a => {
-          console.log("Changed")
+          console.log("Changed");
+          this.router.navigateByUrl('/view-walkins')
         })
     ]);
   }

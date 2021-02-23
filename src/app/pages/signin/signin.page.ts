@@ -58,6 +58,20 @@ export class SigninPage implements OnInit {
       { type: 'pattern', message: 'Please enter a valid password' }
     ],
   };
+  
+  
+    ionViewWillEnter(){
+    // location.reload();
+    console.log("we are entering the owner page");
+    // window.stop();
+}
+  ionViewDidEnter() {
+    location.reload();
+    console.log("sign in page reloaded!");
+   window.stop();
+    
+}
+  
   async submit() {
     
     const loading = await this.loadingCtrl.create();
