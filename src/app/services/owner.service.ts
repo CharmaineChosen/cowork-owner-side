@@ -6,6 +6,7 @@ import 'firebase/firestore';
 import { from } from 'rxjs';
 import { Router } from '@angular/router';
 import { AlertController, NavController, LoadingController } from '@ionic/angular';
+import { duration } from 'moment';
 @Injectable({
   providedIn: 'root'
 })
@@ -19,6 +20,7 @@ export class OwnerServiceService {
   resProfArray = new Array()
   UID: any;
   workspace_uid: any;
+  _error: any;
   constructor(private router: Router,public loadingCtrl: LoadingController, public alertCtrl: AlertController) { }
 
   signAuth() {
@@ -49,7 +51,8 @@ export class OwnerServiceService {
  async updateProfile(user_uid, uid, company_tel, company_address,
     company_website, social_media, company_emaile,
     company_name, img_profile, outside_features, aboutus) {
-    const loading = await this.loadingCtrl.create();
+    // const loading = await this.loadingCtrl.create();
+   this.uploadSpaceSuccess();
     var db = firebase.firestore();
     var hotelsRef = db.collection("profiles").doc(uid);
     var hotel = Promise.all([
@@ -66,36 +69,23 @@ export class OwnerServiceService {
           img_profile: img_profile,
           outside_features: outside_features,
           aboutus: aboutus
-        }, { merge: true }).then(a => {
-            loading.dismiss().then(() => {
-          console.log("Changed");
-        this.router.navigateByUrl('/profile');
-         });
-          console.log("Changed")
-        }),error => {
-        loading.dismiss().then(() => {
-          console.log(error.message);
-          // this.addSpaceerror();
-        });
-      }
+        }, { merge: true })
       
-    ])
-return await loading.present();
+    ]).catch((error) => {
+      this._error = error.message;
+      console.log(this._error);
+      this.updateSpaceError();
+          // this.router.navigateByUrl('/add-space');
+     
+    })
+// return await loading.present();
   }
-  
-   async reload() {
-      const loading = await this.loadingCtrl.create({
-        message: 'Please wait...',
-        // duration: 3000
-      });
-
-      await loading.present();
-    }
   
  async editProfile(user_uid, uid, company_tel, company_address,
     company_website, company_emaile,
     company_name, outside_features: any[], aboutus) {
-    const loading = await this.loadingCtrl.create();
+    // const loading = await this.loadingCtrl.create();
+   this.uploadSpaceSuccess();
     var db = firebase.firestore();
     var hotelsRef = db.collection("profiles");
     hotelsRef.doc(uid).collection("profile").doc(user_uid)
@@ -110,20 +100,13 @@ return await loading.present();
       user_uid: user_uid,
       outside_features: outside_features,
       aboutus: aboutus
-     }, { merge: true }).then(a => {
-            loading.dismiss().then(() => {
-          console.log("Changed");
-        this.router.navigateByUrl('/profile');
-         });
-          console.log("Changed")
-     }),error => {
-        loading.dismiss().then(() => {
-          console.log(error.message);
-          // this.addSpaceerror();
-        });
-      }
-      
-   return await loading.present();
+     }, { merge: true }).catch((error) => {
+          this._error = error.message;
+          console.log(this._error);
+       this.updateSpaceError();
+          // this.router.navigateByUrl('/add-space');
+    })  
+  //  return await loading.present();
   }
   changeImg(user_uid, uid, img_profile) {
     var db = firebase.firestore();
@@ -170,7 +153,8 @@ return await loading.present();
 
 
   async addcoworkingSpace(profiles_uid,profile_uid,categories,category_number,address,city,province,amenities,image,price,description) {
-      const loading = await this.loadingCtrl.create();
+    // const loading = await this.loadingCtrl.create();
+    this.addSpace();
     var db = firebase.firestore();
     var hotelsRef = db.collection("profiles").doc(profiles_uid);
     var hotel = Promise.all([
@@ -188,23 +172,68 @@ return await loading.present();
           price:price,
           description: description,
           
-        }).then(a => {
-          loading.dismiss().then(() => {
-            console.log("Changed");
-            this.addSpacesuccess();
-        this.router.navigateByUrl('/owner-landing');
-         });
-          
-          
-        }),error => {
-        loading.dismiss().then(() => {
-          console.log(error.message);
+        }).catch((error) => {
+          this._error = error.message;
+          console.log(this._error);
           this.addSpaceerror();
-        });
-      }
-    ]);
-    return await loading.present();
+          // this.router.navigateByUrl('/add-space');
+     
+    })
+    ])
+    // return await loading.present();
+   
   }
+    async addSpace() {
+    const loader = await this.loadingCtrl.create({
+      message: 'Uploading Space',
+      duration: 2000,
+    }).then((res) => {
+      res.present()
+      res.onDidDismiss().then(async (dis) => {
+        console.log('Loading dismissed after 2 seconds', dis)
+        const alert = await this.alertCtrl.create({
+          message: `Your space was added successfully, Click Okay to go Home`,
+          buttons: [
+            {
+              text: 'Ok',
+              handler: () => {
+                this.router.navigateByUrl('/owner-landing');
+              }
+            }
+          ]
+
+        });
+        return await alert.present();
+      })
+    });
+  }
+    
+  async uploadSpaceSuccess() {
+    const loader = await this.loadingCtrl.create({
+      message: 'Updating Space',
+      duration: 2000,
+    }).then((res) => {
+      res.present()
+      res.onDidDismiss().then(async (dis) => {
+        console.log('Loading dismissed after 2 seconds', dis)
+        const alert = await this.alertCtrl.create({
+          message: `Your space was updated successfully, Click Okay to view you profile`,
+          buttons: [
+            {
+              text: 'Ok',
+              handler: () => {
+                this.router.navigateByUrl('/profile');
+              }
+            }
+          ]
+
+        });
+        return await alert.present();
+      })
+    });
+  }
+  
+
   //  async addcoworkingSpace(profiles_uid,profile_uid,categories,category_number,address,city,province,amenities,image,price,description) {
     
   //   const loading = await this.loadingCtrl.create();
@@ -356,7 +385,7 @@ getWorkSpaceUID(){
  return this.workspace_uid ;
   }
   
-   async addSpacesuccess() { 
+   async updateSpaceError() { 
   const alert = await this.alertCtrl.create({ 
     header: 'Successful', 
        message: 'Your space was added successfully, Click Okay to go Home',
@@ -378,8 +407,8 @@ getWorkSpaceUID(){
   
   async addSpaceerror() { 
   const alert = await this.alertCtrl.create({ 
-    header: 'Successful', 
-       message: 'Something went wrong while adding your space, Please try again.',
+    header: 'Warning!!', 
+       message: 'Something went wrong while adding your space, Read error below.' + this._error,
       buttons: [
         {
           text: 'Okay',
@@ -391,9 +420,8 @@ getWorkSpaceUID(){
       ]
     }); 
     await alert.present(); 
-    
-    
-    
   }
 
+  
+  
 }

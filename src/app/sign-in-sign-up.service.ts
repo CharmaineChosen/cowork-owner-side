@@ -102,8 +102,7 @@ export class SignInSignUpService {
         this.checkExistance(this.getUserSession())
         this.loginSucessful();
         console.log("details: " + email + ' ' + this.getUserSession())
-      }
-      
+      }  
     }).catch((error) => {
       this._error = error.message;
       this.showAlertErrorfb();

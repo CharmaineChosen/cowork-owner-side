@@ -202,8 +202,38 @@ fileChangeEvent(fileInput: any) {
       reader.readAsDataURL(fileInput.target.files[0])
   }
 
+  }
+  
+    ionViewWillEnter(){
+    // location.reload();
+    console.log("we are entering the add space page");
+    // window.stop();
 }
+  ionViewDidEnter() {
+  //   location.reload();
+  //   console.log("add space page reloaded!");
+  //  window.stop();
+       firebase.firestore().collection("profiles")
+                        .doc(this.account.getUserSession())
+                        .collection("profile")
+                        .where("uid","==",this.account.getUserSession())
+.get()
+.then(doc => {
 
+    doc.forEach(dat=>{
+      // console.log("hh"+dat.id) 
+      this.profileUid=dat.id;
+    })
+})
+    // this.getSpacesSuccess();
+    this.workingSpaces();
+    // location.reload();
+    console.log("ionViewDidEnter");
+    // window.stop();
+
+    
+}
+  
   ngOnInit() {
     
   }
@@ -224,16 +254,9 @@ fileChangeEvent(fileInput: any) {
                                       //  this.  CreatePopover()
   }
 
-    // async reload() {
-    //   const loading = await this.loadingCtrl.create({
-    //     message: 'Please wait...',
-    //     // duration: 3000
-    //   });
-    //   this.router.navigateByUrl('/owner-landing');
-    //   await loading.present();
-    // }
  
-  workingSpaces(){
+  workingSpaces() {
+    
     firebase.firestore().collection("profiles")
     .doc(this.account.getUserSession())
     .collection("profile").doc(this.profileUid).collection("space")
@@ -245,9 +268,10 @@ fileChangeEvent(fileInput: any) {
         var array:any=[]
     
       // array.push(Object.assign(doc.data(),{'cateuid':this.profileUid}) );
+        // this.getSpacesSuccess();
      array.push(doc.data().categories );
-     this.ownerservice.setWorkSpaceUID(doc.data().workspace_uid)
-  
+        this.ownerservice.setWorkSpaceUID(doc.data().workspace_uid);
+        // this.getSpacesSuccess();
   //  this.spaces.push(this.remove_duplicates(array))  
 
   this.unique(array)
@@ -271,9 +295,10 @@ returnUniq(){
   return this.ret_array;
 }
 
-  view(){
-     this.viewSpace =1;
-     this.workingSpaces()
+  view() {
+    this.viewSpace = 1;
+    this.getSpacesSuccess();
+    this.workingSpaces();
   }
 
   CreatePopover()
@@ -282,6 +307,32 @@ returnUniq(){
     showBackdrop:false}).then((popoverElement)=>{
       popoverElement.present();
     })
+  }
+    async getSpacesSuccess() {
+    const loader = await this.loadingCtrl.create({
+      message: 'Loading Spaces',
+      duration: 1000,
+    }).then((res) => {
+      res.present()
+      res.onDidDismiss().then(async (dis) => {
+        // this.getSpacesSuccess();
+        // console.log('Loading dismissed after 2 seconds', dis)
+        // location.reload();
+        // const alert = await this.alertCtrl.create({
+        //   message: ``,
+        //   buttons: [
+        //     {
+        //       text: 'Ok',
+        //       handler: () => {
+        //         // this.router.navigateByUrl('/add-space');
+        //       }
+        //     }
+        //   ]
+
+        // });
+        // return await alert.present();
+      })
+    });
   }
 
 
