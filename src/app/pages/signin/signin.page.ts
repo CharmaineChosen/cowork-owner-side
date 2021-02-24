@@ -30,6 +30,10 @@ export class SigninPage implements OnInit {
       email: ['', Validators.required],
       password: ['', Validators.required],
     })
+    
+    // location.reload();
+    // console.log('refreshed!');
+    // window.stop()
   }
   // ngOnDestroy(): void {
   //   //Called once, before the instance is destroyed.
@@ -66,9 +70,14 @@ export class SigninPage implements OnInit {
     // window.stop();
 }
   ionViewDidEnter() {
-    location.reload();
-    console.log("sign in page reloaded!");
-   window.stop();
+  //   location.reload();
+  //   console.log("sign in page reloaded!");
+   window.stop();window.addEventListener('error', e => {
+  // prompt user to confirm refresh
+  if (/Loading chunk [\d]+ failed/.test(e.message)) {
+    window.location.reload();
+  }
+});
     
 }
   

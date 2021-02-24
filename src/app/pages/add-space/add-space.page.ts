@@ -91,8 +91,8 @@ export class AddSpacePage implements OnInit {
     address: ['', [Validators.required]],
     city: ['', [Validators.required]],
     province: ['', [Validators.required]],
-    description:['',[Validators.required,Validators.maxLength(150),Validators.minLength(2)]],
-    price: ['', [Validators.required, Validators.maxLength(2), Validators.maxLength(3), Validators.pattern('^[0-9]+$')]],
+    description:['',[Validators.required,Validators.maxLength(150),Validators.minLength(20)]],
+    price: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(6), Validators.pattern(/^[0-9]+.[0-9]{2}/g)]],
     name: this.formBuilder.array([]),
     nameAnim:[false, Validators.requiredTrue]
     

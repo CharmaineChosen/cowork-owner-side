@@ -19,6 +19,7 @@ export class SignInSignUpService {
   uid: any;
   // UID:any;
   status: boolean;
+  onboardingStatus: boolean = false;
   group: any;
   _error: any;
 
@@ -53,7 +54,8 @@ export class SignInSignUpService {
                     company_website: "www.webste.com",
                     social_media: "social media links",
                     company_address: "address",
-                    usergroup: "owner",
+                  usergroup: "owner",
+                    // onboardstatus: this.onboardingStatus,
                     uid: res.user.uid,
                   date: new Date()
                    
@@ -77,11 +79,11 @@ export class SignInSignUpService {
         if (user.emailVerified == false) {
           console.log('you did not verify your email');
           this.showAlertEmailVerification();
-          this.router.navigateByUrl('/signin');
+          // this.router.navigateByUrl('/signin');
           resolve(0)
         }
         else {
-         this.router.navigateByUrl('/owner-landing');
+        //  this.router.navigateByUrl('/owner-landing');
           resolve(1)
         }
       })
@@ -98,7 +100,7 @@ export class SignInSignUpService {
         uid = user.uid;
         this.userSession(uid);
         this.checkExistance(this.getUserSession())
-        
+        this.loginSucessful();
         console.log("details: " + email + ' ' + this.getUserSession())
       }
       
@@ -160,6 +162,9 @@ export class SignInSignUpService {
         
       });
   }
+   reserve() {
+    return firebase.firestore().collection('profiles');
+  }
   setStatus(x) {
     this.status = x;
   }
@@ -215,8 +220,9 @@ export class SignInSignUpService {
         {
           text: 'Okay',
           handler: async () => {
-            // this.router.navigateByUrl('/working-spaces');
-      }
+            this.router.navigateByUrl('/sign-in');
+          }
+          
         },
       ]
     }); 
@@ -225,4 +231,30 @@ export class SignInSignUpService {
     
     
   } 
+  
+   async loginSucessful() { 
+  const alert = await this.alertCtrl.create({ 
+    header: 'Alert!', 
+       message: 'Login Successful!, Click okay to Complete your Profile, ignore msg if you already did',
+      buttons: [
+        {
+          text: 'Okay',
+          handler: async () => {
+            this.router.navigateByUrl('/profile-add');
+      }
+        },
+         {
+          text: 'Ignore',
+          handler: async () => {
+            this.router.navigateByUrl('/owner-landing');
+      }
+        },
+    ]
+      
+    }); 
+    await alert.present(); 
+    
+    
+    
+  }
 }

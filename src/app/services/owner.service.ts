@@ -19,7 +19,7 @@ export class OwnerServiceService {
   resProfArray = new Array()
   UID: any;
   workspace_uid: any;
-  constructor(private router: Router,public loadingCtrl: LoadingController) { }
+  constructor(private router: Router,public loadingCtrl: LoadingController, public alertCtrl: AlertController) { }
 
   signAuth() {
     return firebase.auth().onAuthStateChanged(user => {
@@ -72,7 +72,12 @@ export class OwnerServiceService {
         this.router.navigateByUrl('/profile');
          });
           console.log("Changed")
-        })
+        }),error => {
+        loading.dismiss().then(() => {
+          console.log(error.message);
+          // this.addSpaceerror();
+        });
+      }
       
     ])
 return await loading.present();
@@ -111,7 +116,13 @@ return await loading.present();
         this.router.navigateByUrl('/profile');
          });
           console.log("Changed")
-     })
+     }),error => {
+        loading.dismiss().then(() => {
+          console.log(error.message);
+          // this.addSpaceerror();
+        });
+      }
+      
    return await loading.present();
   }
   changeImg(user_uid, uid, img_profile) {
@@ -179,12 +190,18 @@ return await loading.present();
           
         }).then(a => {
           loading.dismiss().then(() => {
-          console.log("Changed");
+            console.log("Changed");
+            this.addSpacesuccess();
         this.router.navigateByUrl('/owner-landing');
          });
           
           
-        })
+        }),error => {
+        loading.dismiss().then(() => {
+          console.log(error.message);
+          this.addSpaceerror();
+        });
+      }
     ]);
     return await loading.present();
   }
@@ -337,6 +354,46 @@ setWorkSpaceUID(uid){
 }
 getWorkSpaceUID(){
  return this.workspace_uid ;
-}
+  }
+  
+   async addSpacesuccess() { 
+  const alert = await this.alertCtrl.create({ 
+    header: 'Successful', 
+       message: 'Your space was added successfully, Click Okay to go Home',
+      buttons: [
+        {
+          text: 'Okay',
+          handler: async () => {
+            this.router.navigateByUrl('/owner-landing');
+          }
+          
+        },
+      ]
+    }); 
+    await alert.present(); 
+    
+    
+    
+  }
+  
+  async addSpaceerror() { 
+  const alert = await this.alertCtrl.create({ 
+    header: 'Successful', 
+       message: 'Something went wrong while adding your space, Please try again.',
+      buttons: [
+        {
+          text: 'Okay',
+          handler: async () => {
+            this.router.navigateByUrl('/add-space');
+          }
+          
+        },
+      ]
+    }); 
+    await alert.present(); 
+    
+    
+    
+  }
 
 }
