@@ -92,7 +92,12 @@ const routes: Routes = [
   {
     path: 'splash',
     loadChildren: () => import('./pages/splash/splash.module').then( m => m.SplashPageModule)
+  },
+  {
+    path: 'your-spaces',
+    loadChildren: () => import('./pages/your-spaces/your-spaces.module').then( m => m.YourSpacesPageModule)
   }
+
 
 ];
 

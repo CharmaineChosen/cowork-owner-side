@@ -317,7 +317,7 @@ returnUniq(){
       res.onDidDismiss().then(async (dis) => {
         // this.getSpacesSuccess();
         // console.log('Loading dismissed after 2 seconds', dis)
-        // location.reload();
+        // location.reload();+
         // const alert = await this.alertCtrl.create({
         //   message: ``,
         //   buttons: [

@@ -30,7 +30,7 @@ db =firebase.firestore();
   oldBookArray:any[]=[];
   oldBookNum: number=0;
   newBookNum:number=0;
-  spacesNum:any;
+  spacesNum:number = 0;
  public cartItemCount = new BehaviorSubject(0);
   constructor(private router: Router,private route:ActivatedRoute,public ownerservice:OwnerServiceService,public account:SignInSignUpService) { 
   // console.log(this.account.getUserSession())
@@ -45,9 +45,9 @@ db =firebase.firestore();
   }
    
   ionViewWillEnter(){
-    location.reload();
+    // location.reload();
     console.log("we are entering the owner page");
-    window.stop();
+    // window.stop();
 }
   ionViewDidEnter() {
     location.reload();
@@ -79,7 +79,9 @@ db =firebase.firestore();
     get()
     .then(snapshot => {
       snapshot.forEach(dat => {
+        // this.spacesArray = [];
         this.spacesArray.push(Object.assign(dat.data(), { 'reservationuid': dat.id }))
+        
         this.spacesArray.sort();
         this.spacesNum = this.spacesArray.length;
           console.log(this.spacesArray.length); 

@@ -44,12 +44,15 @@ export class ProfilePage implements OnInit {
     // }
     // window.location.reload();
     //       window.stop();
+    this.getProfile();
    console.log("we are entering the profile page");
 }
   ionViewDidEnter() {
+   
     firebase.firestore().collectionGroup("profile").where("uid", "==", this.account.getUserSession())
     .onSnapshot((querySnapshot) => {
       querySnapshot.forEach((doc) => {
+        
         this.profile = doc.data();
        
           // this.array.push(doc.data());
@@ -67,7 +70,34 @@ export class ProfilePage implements OnInit {
         
     console.log("ionViewDidEnter");
     
-} 
+  } 
+   async getProfile() {
+    const loader = await this.loadingCtrl.create({
+      message: 'Loading Your profile',
+      duration: 500,
+    }).then((res) => {
+      res.present()
+      res.onDidDismiss().then(async (dis) => {
+      
+        // this.getSpacesSuccess();
+        // console.log('Loading dismissed after 2 seconds', dis)
+        // location.reload();
+        // const alert = await this.alertCtrl.create({
+        //   message: ``,
+        //   buttons: [
+        //     {
+        //       text: 'Ok',
+        //       handler: () => {
+        //         // this.router.navigateByUrl('/add-space');
+        //       }
+        //     }
+        //   ]
+
+        // });
+        // return await alert.present();
+      })
+    });
+  }
   
    workingSpaces(){
     firebase.firestore().collection("profiles")
